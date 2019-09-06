@@ -87,6 +87,25 @@ data FontSize
   | Larger
   | FontSizeLength CSSLength
 
+instance showFontSize :: Show FontSize where
+  show XXSmall = "xx-small"
+  show XSmall = "x-small"
+  show Small = "small"
+  show Medium = "medium"
+  show Large = "large"
+  show XLarge = "x-large"
+  show XXLarge = "xx-large"
+  show Smaller = "smaller"
+  show Larger = "larger"
+  show (FontSizeLength l) = show l
+
+data LengthPercentage
+  = Length CSSLength
+  | Percentage Number
+instance showLengthPercentage :: Show LengthPercentage where
+  show (Length cssLength) = show cssLength
+  show (Percentage val) = show val <> "%"
+
 data Orient
   = AutoOrient
   | AutoStartReverse
@@ -110,18 +129,6 @@ instance showMarkerUnit :: Show MarkerUnit where
 printMarkerUnit :: MarkerUnit -> String
 printMarkerUnit UserSpaceOnUse = "userSpaceOnUse"
 printMarkerUnit StrokeWidth = "strokeWidth"
-
-instance showFontSize :: Show FontSize where
-  show XXSmall = "xx-small"
-  show XSmall = "x-small"
-  show Small = "small"
-  show Medium = "medium"
-  show Large = "large"
-  show XLarge = "x-large"
-  show XXLarge = "xx-large"
-  show Smaller = "smaller"
-  show Larger = "larger"
-  show (FontSizeLength l) = show l
 
 printTextAnchor :: TextAnchor -> String
 printTextAnchor Start = "start"
@@ -252,10 +259,10 @@ rx = attr (AttrName "rx") <<< show
 ry :: forall r i. Number -> IProp (ry :: Number | r) i
 ry = attr (AttrName "ry") <<< show
 
-width :: forall r i. Number -> IProp (width :: Number | r) i
+width :: forall r i. LengthPercentage -> IProp (width :: Number | r) i
 width = attr (AttrName "width") <<< show
 
-height :: forall r i. Number -> IProp (height :: Number | r) i
+height :: forall r i. LengthPercentage -> IProp (height :: Number | r) i
 height = attr (AttrName "height") <<< show
 
 x :: forall r i. Number -> IProp (x :: Number | r) i
