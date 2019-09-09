@@ -15,8 +15,8 @@ data Color = RGB Int Int Int
            | RGBA Int Int Int Number
 
 printColor :: Maybe Color -> String
-printColor (Just (RGB r g b)) = "rgb(" <> (joinWith "," $ map show [r, g, b]) <> ")"
-printColor (Just (RGBA r g b o)) = "rgba(" <> (joinWith "," $ map show [r, g, b]) <> "," <> show o <> ")"
+printColor (Just (RGB r' g' b')) = "rgb(" <> (joinWith "," $ map show [r', g', b']) <> ")"
+printColor (Just (RGBA r' g' b' o')) = "rgba(" <> (joinWith "," $ map show [r', g', b']) <> "," <> show o' <> ")"
 printColor Nothing = "None"
 
 data Transform
@@ -135,13 +135,13 @@ printBaseline TextAfterEdge = "text-after-edge"
 printBaseline TextBeforeEdge = "text-before-edge"
 
 printTransform :: Transform -> String
-printTransform (Matrix a b c d e f) =
-  "matrix(" <> (joinWith "," $ map show [a, b, c, d, e, f]) <> ")"
-printTransform (Translate x y) = "translate(" <> (joinWith "," $ map show [x, y]) <> ")"
-printTransform (Scale x y) = "scale(" <> (joinWith "," $ map show [x, y]) <> ")"
-printTransform (Rotate a x y) = "rotate(" <> (joinWith "," $ map show [a, x, y]) <> ")"
-printTransform (SkewX a) = "skewX(" <> show a <> ")"
-printTransform (SkewY a) = "skewY(" <> show a <> ")"
+printTransform (Matrix a' b' c' d' e' f') =
+  "matrix(" <> (joinWith "," $ map show [a', b', c', d', e', f']) <> ")"
+printTransform (Translate x' y') = "translate(" <> (joinWith "," $ map show [x', y']) <> ")"
+printTransform (Scale x' y') = "scale(" <> (joinWith "," $ map show [x', y']) <> ")"
+printTransform (Rotate a' x' y') = "rotate(" <> (joinWith "," $ map show [a', x', y']) <> ")"
+printTransform (SkewX a') = "skewX(" <> show a' <> ")"
+printTransform (SkewY a') = "skewY(" <> show a' <> ")"
 
 data D = Rel Command | Abs Command
 printD :: D -> String
@@ -161,20 +161,20 @@ data Command
   | Z
 
 printCommand :: Command -> {command :: String, params :: String}
-printCommand (M x y) = {command: "m", params: joinWith "," $ map show [x, y]}
-printCommand (L x y) = {command: "l", params: joinWith "," $ map show [x, y]}
-printCommand (C x1 y1 x2 y2 x y) =
-  {command: "c" , params: joinWith "," $ map show [x1, y1, x2, y2, x, y]}
-printCommand (S x2 y2 x y) =
-  {command: "s" , params: joinWith "," $ map show [x2, y2, x, y]}
-printCommand (Q x1 y1 x y) =
-  {command: "q" , params: joinWith "," $ map show [x1, y1, x, y]}
-printCommand (T x y) = {command: "t", params: joinWith "," $ map show [x, y]}
-printCommand (A rx ry rot large sweep x y) =
+printCommand (M x' y') = {command: "m", params: joinWith "," $ map show [x', y']}
+printCommand (L x' y') = {command: "l", params: joinWith "," $ map show [x', y']}
+printCommand (C x1' y1' x2' y2' x' y') =
+  {command: "c" , params: joinWith "," $ map show [x1', y1', x2', y2', x', y']}
+printCommand (S x2' y2' x' y') =
+  {command: "s" , params: joinWith "," $ map show [x2', y2', x', y']}
+printCommand (Q x1' y1' x' y') =
+  {command: "q" , params: joinWith "," $ map show [x1', y1', x', y']}
+printCommand (T x' y') = {command: "t", params: joinWith "," $ map show [x', y']}
+printCommand (A rx' ry' rot large sweep x' y') =
   {command: "a", params: joinWith ","
-                 $ map show [ rx, ry, rot ]
+                 $ map show [ rx', ry', rot ]
                  <> [ large_flag, sweep_flag ]
-                 <> map show [ x, y ]}
+                 <> map show [ x', y' ]}
   where
   large_flag = if large then "0" else "1"
   sweep_flag = if sweep then "0" else "1"
@@ -192,6 +192,22 @@ printMeetOrSlice :: MeetOrSlice -> String
 printMeetOrSlice Meet = "meet"
 printMeetOrSlice Slice = "slice"
 
+data StrokeLinecap
+  = Butt
+  | Round
+  | Square
+printStrokeLinecap :: StrokeLinecap -> String
+printStrokeLinecap Butt = "butt"
+printStrokeLinecap Round = "round"
+printStrokeLinecap Square = "square"
+
+data PatternUnits
+  = PatternUnitsUserSpaceOnUse
+  | ObjectBoundingBox
+printPatternUnits :: PatternUnits -> String
+printPatternUnits PatternUnitsUserSpaceOnUse = "userSpaceOnUse"
+printPatternUnits ObjectBoundingBox = "objectBoundingBox"
+
 attr :: forall r i. AttrName -> String -> IProp r i
 attr = coe Core.attr
   where
@@ -208,7 +224,7 @@ r :: forall s i. Number -> IProp (r :: Number | s) i
 r = attr (AttrName "r") <<< show
 
 viewBox :: forall r i. Number -> Number -> Number -> Number -> IProp (viewBox :: String | r) i
-viewBox x y w h = attr (AttrName "viewBox") (joinWith " " $ map show [x, y, w, h])
+viewBox x' y' w' h' = attr (AttrName "viewBox") (joinWith " " $ map show [x', y', w', h'])
 
 preserveAspectRatio :: forall r i. Maybe {x :: Align, y :: Align} -> MeetOrSlice -> IProp (preserveAspectRatio :: String | r) i
 preserveAspectRatio align slice =
@@ -216,7 +232,7 @@ preserveAspectRatio align slice =
   where
     align_str = case align of
       Nothing -> "none"
-      Just {x, y} -> joinWith "" $ ["x", printAlign x, "Y", printAlign y]
+      Just align' -> joinWith "" $ ["x", printAlign align'.x, "Y", printAlign align'.y]
 
 rx :: forall r i. Number -> IProp (rx :: Number | r) i
 rx = attr (AttrName "rx") <<< show
@@ -250,6 +266,9 @@ y2 = attr (AttrName "y2") <<< show
 
 stroke :: forall r i. Maybe Color -> IProp (stroke :: String | r) i
 stroke = attr (AttrName "stroke") <<< printColor
+
+strokeLinecap :: forall r i. StrokeLinecap -> IProp (strokeLinecap :: String | r) i
+strokeLinecap = attr (AttrName "stroke-linecap") <<< printStrokeLinecap
 
 fill :: forall r i. Maybe Color -> IProp (fill :: String | r) i
 fill = attr (AttrName "fill") <<< printColor
@@ -297,8 +316,26 @@ markerUnits = attr (AttrName "markerUnits") <<< printMarkerUnit
 strokeWidth :: forall r i. Number -> IProp (strokeWidth :: Number | r) i
 strokeWidth = attr (AttrName "stroke-width") <<< show
 
+markerStart :: forall r i. String -> IProp (markerStart :: String | r) i
+markerStart = attr (AttrName "marker-start")
+
+markerMid :: forall r i. String -> IProp (markerMid :: String | r) i
+markerMid = attr (AttrName "marker-mid")
+
 markerEnd :: forall r i. String -> IProp (markerEnd :: String | r) i
 markerEnd = attr (AttrName "marker-end")
+
+href :: forall r i. String -> IProp (href :: String | r) i
+href = attr (AttrName "href")
+
+patternContentUnits :: forall r i. PatternUnits -> IProp (patternContentUnits :: String | r) i
+patternContentUnits = attr (AttrName "patternContentUnits") <<< printPatternUnits
+
+patternTransform :: forall r i. Transform -> IProp (patternTransform :: String | r) i
+patternTransform = attr (AttrName "patternTransform") <<< printTransform
+
+patternUnits :: forall r i. PatternUnits -> IProp (patternUnits :: String | r) i
+patternUnits = attr (AttrName "patternUnits") <<< printPatternUnits
 
 --------------------------------------------------------------------------------
 

@@ -51,6 +51,9 @@ defs = element $ ElemName "defs"
 marker :: forall p i. Node I.SVGmarker p i
 marker = element $ ElemName "marker"
 
+pattern :: forall p i. Node I.SVGPattern p i
+pattern = element $ ElemName "pattern"
+
 --------------------------------------------------------------------------------
 
 animate :: forall p i. Leaf I.SVGanimate p i

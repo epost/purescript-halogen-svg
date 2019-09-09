@@ -87,6 +87,7 @@ type SVGline = MarkerAttributes (GlobalAttributes
   , y2 :: Number
   , transform :: String
   , strokeWidth :: Number
+  , strokeLinecap :: String
   ))
 
 type SVGtext = GlobalAttributes
@@ -114,6 +115,19 @@ type SVGmarker = (PresentationAttributes (StyleAttributes (CoreAttributes
   , orient :: String
   , markerUnits :: String
   ))))
+
+type SVGPattern = GlobalAttributes
+  ( height :: Number
+  , width :: Number
+  , href :: String
+  , patternContentUnits :: String
+  , patternTransform :: String
+  , patternUnits :: String
+  , preserveAspectRatio :: String
+  , viewBox :: String
+  , x :: Number
+  , y :: Number
+  )
 
 --------------------------------------------------------------------------------
 
