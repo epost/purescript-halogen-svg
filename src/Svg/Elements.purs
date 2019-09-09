@@ -36,6 +36,9 @@ rect props = element (ElemName "rect") props []
 path :: forall p i. Leaf I.SVGpath p i
 path props = element (ElemName "path") props []
 
+polyline :: forall p i. Leaf I.SVGpolyline p i
+polyline props = element (ElemName "polyline") props []
+
 line :: forall p i. Leaf I.SVGline p i
 line props = element (ElemName "line") props []
 
@@ -50,6 +53,9 @@ defs = element $ ElemName "defs"
 
 marker :: forall p i. Node I.SVGmarker p i
 marker = element $ ElemName "marker"
+
+pattern :: forall p i. Node I.SVGPattern p i
+pattern = element $ ElemName "pattern"
 
 --------------------------------------------------------------------------------
 
