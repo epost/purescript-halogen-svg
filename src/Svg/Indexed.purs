@@ -80,6 +80,11 @@ type SVGpath = MarkerAttributes (GlobalAttributes
   , transform :: String
   ))
 
+type SVGpolyline = MarkerAttributes (GlobalAttributes
+  ( points :: String
+  , pathLength :: Number
+  ))
+
 type SVGline = MarkerAttributes (GlobalAttributes
   ( x1 :: Number
   , y1 :: Number
