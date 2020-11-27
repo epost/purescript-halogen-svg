@@ -169,6 +169,8 @@ printD = case _ of
 data Command
   = M Number Number
   | L Number Number
+  | H Number
+  | V Number
   | C Number Number Number Number Number Number
   | S Number Number Number Number
   | Q Number Number Number Number
@@ -182,6 +184,10 @@ printCommand = case _ of
     {command: "m", params: joinWith "," $ map show [x_, y_]}
   L x_ y_ ->
     {command: "l", params: joinWith "," $ map show [x_, y_]}
+  H x_ ->
+    {command: "h", params: show x_ }
+  V y_ ->
+    {command: "v", params: show y_ }
   C x1_ y1_ x2_ y2_ x_ y_ ->
     {command: "c" , params: joinWith "," $ map show [x1_, y1_, x2_, y2_, x_, y_]}
   S x2_ y2_ x_ y_ ->
