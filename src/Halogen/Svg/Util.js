@@ -1,3 +1,4 @@
+"use strict";
 // module Svg.Util
 
 exports._beginElements = function (cssSelectorStr) {

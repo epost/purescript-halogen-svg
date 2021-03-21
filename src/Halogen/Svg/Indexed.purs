@@ -1,4 +1,4 @@
-module Svg.Indexed where
+module Halogen.Svg.Indexed where
 
 import Web.UIEvent.MouseEvent (MouseEvent)
 import Web.UIEvent.WheelEvent (WheelEvent)
@@ -78,6 +78,7 @@ type SVGg = GlobalAttributes
 type SVGpath = MarkerAttributes (GlobalAttributes
   ( d :: String
   , transform :: String
+  , strokeWidth :: Number
   ))
 
 type SVGline = MarkerAttributes (GlobalAttributes

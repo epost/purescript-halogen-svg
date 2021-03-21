@@ -1,4 +1,4 @@
-module Svg.Util where
+module Halogen.Svg.Util where
 
 import Prelude ((<<<))
 import Effect.Aff (Aff)

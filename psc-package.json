@@ -1,8 +1,0 @@
-{
-  "name": "halogen-svg",
-  "set": "psc-0.13.3-20190818",
-  "source": "https://github.com/purescript/package-sets.git",
-  "depends": [
-    "prelude", "halogen", "strings", "web-uievents", "effect"
-  ]
-}
